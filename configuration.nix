@@ -4,11 +4,16 @@
 
 { config, lib, pkgs, ... }:
 
+let
+  stateVersion = "23.05";
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-${stateVersion}.tar.gz";
+in
 {
   imports =
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      (import "${home-manager}/nixos")
     ];
 
   # Bootloader.
@@ -225,6 +230,19 @@
 
   services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
 
+  home-manager.useGlobalPkgs = true;
+  home-manager.users.pietro = { lib, pkgs, ... }: {
+    home.stateVersion = stateVersion;
+    # Overwrite steam.desktop shortcut so that is uses PRIME
+    # offloading for Steam and all its games
+    home.activation.steam = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      $DRY_RUN_CMD sed 's/^Exec=/&nvidia-offload /' \
+        ${pkgs.steam}/share/applications/steam.desktop \
+        > ~/.local/share/applications/steam.desktop
+      $DRY_RUN_CMD chmod +x ~/.local/share/applications/steam.desktop
+    '';
+  };
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -250,5 +268,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the comment?
+  system.stateVersion = stateVersion; # Did you read the comment?
 }

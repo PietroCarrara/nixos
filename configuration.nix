@@ -134,7 +134,6 @@ in
     isNormalUser = true;
     description = "Pietro Benati Carrara";
     extraGroups = [ "networkmanager" "wheel" ];
-    # Running `nvidia-offload vlc` would run VLC with dGPU
 
     packages = with pkgs; [
       firefox
@@ -147,10 +146,16 @@ in
       git
       pipewire
 
+      gnome3.gnome-tweaks
       gnomeExtensions.unite
       gnomeExtensions.appindicator
       gnomeExtensions.gsconnect
     ];
+  };
+
+  i18n.inputMethod = {
+    enabled = "ibus";
+    ibus.engines = with pkgs.ibus-engines; [ libpinyin ];
   };
 
   programs = {

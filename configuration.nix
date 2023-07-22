@@ -134,12 +134,14 @@
 
       gnomeExtensions.unite
       gnomeExtensions.appindicator
+      gnomeExtensions.gsconnect
     ];
   };
 
   programs = {
     steam.enable = true;
     xwayland.enable = true;
+    neovim = { enable = true; defaultEditor = true; };
   };
 
   fonts.fonts = with pkgs; [
@@ -189,31 +191,22 @@
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages =
-    # Running `nvidia-offload vlc` would run VLC with dGPU
-
     let
       nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
-
-      export __NV_PRIME_RENDER_OFFLOAD=1
-
-      export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
-
-      export __GLX_VENDOR_LIBRARY_NAME=nvidia
-
-      export __VK_LAYER_NV_optimus=NVIDIA_only
-
-
-      exec "$@"
-
-    '';
-
+        export __NV_PRIME_RENDER_OFFLOAD=1
+        export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
+        export __GLX_VENDOR_LIBRARY_NAME=nvidia
+        export __VK_LAYER_NV_optimus=NVIDIA_only
+        exec "$@"
+      '';
     in
     [ nvidia-offload ];
 
   environment.sessionVariables.GST_PLUGIN_SYSTEM_PATH_1_0 = lib.makeSearchPathOutput
     "lib"
     "lib/gstreamer-1.0"
-    (with pkgs.gst_all_1; [
+    (with pkgs.gst_all_1;
+    [
       gst-plugins-good
       gst-plugins-bad
       gst-plugins-ugly

@@ -12,9 +12,19 @@
     ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.initrd.kernelModules = [ "i915" ];
+  boot = {
+    kernelParams = [ "quiet" "splash" ];
+    consoleLogLevel = 0;
+    initrd.verbose = false;
+    plymouth.enable = true;
+    loader = {
+      timeout = lib.mkDefault 0;
+      efi.canTouchEfiVariables = true;
+      systemd-boot.enable = true;
+    };
+    initrd.kernelModules = [ "i915" ];
+  };
+
 
   networking.hostName = "hope"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.

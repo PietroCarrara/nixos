@@ -145,6 +145,7 @@ in
       pavucontrol
       git
       pipewire
+      ffmpeg
 
       gnome3.gnome-tweaks
       gnomeExtensions.unite

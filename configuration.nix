@@ -146,7 +146,10 @@ in
       git
       pipewire
       ffmpeg
+      nodejs
+      yarn
 
+      gnome.gnome-sound-recorder
       gnome3.gnome-tweaks
       gnomeExtensions.unite
       gnomeExtensions.appindicator

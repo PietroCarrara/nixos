@@ -148,6 +148,7 @@ in
       ffmpeg
       nodejs
       yarn
+      imagemagick
 
       gnome.gnome-sound-recorder
       gnome3.gnome-tweaks
@@ -250,6 +251,13 @@ in
         > ~/.local/share/applications/steam.desktop
       $DRY_RUN_CMD chmod +x ~/.local/share/applications/steam.desktop
     '';
+
+    programs.mpv = {
+      enable = true;
+      config = {
+        cache = "yes";
+      };
+    };
   };
 
   # Some programs need SUID wrappers, can be configured further or are

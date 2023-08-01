@@ -2,11 +2,12 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, nixpkgs-unstable, ... }:
 
 let
   stateVersion = "23.05";
   home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-${stateVersion}.tar.gz";
+  unstableTarball = fetchTarball https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
 in
 {
   imports =
@@ -15,6 +16,14 @@ in
       ./hardware-configuration.nix
       (import "${home-manager}/nixos")
     ];
+
+  nixpkgs.config = {
+    packageOverrides = pkgs: {
+      unstable = import unstableTarball {
+        config = config.nixpkgs.config;
+      };
+    };
+  };
 
   # Bootloader.
   boot = {
@@ -150,11 +159,14 @@ in
       yarn
       imagemagick
 
+      gnome-online-accounts
+      unstable.gnome.geary
       gnome.gnome-sound-recorder
       gnome3.gnome-tweaks
       gnomeExtensions.unite
       gnomeExtensions.appindicator
       gnomeExtensions.gsconnect
+      gnomeExtensions.geary-tray-icon
     ];
   };
 

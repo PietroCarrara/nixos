@@ -159,6 +159,7 @@ in
       yarn
       imagemagick
       lutris
+      unstable.cartridges
 
       gnome-online-accounts
       unstable.gnome.geary

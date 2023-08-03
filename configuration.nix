@@ -158,9 +158,12 @@ in
       nodejs
       yarn
       imagemagick
+      lutris
 
       gnome-online-accounts
       unstable.gnome.geary
+      unstable.transmission_4-gtk
+      unstable.transmission_4
       gnome.gnome-sound-recorder
       gnome3.gnome-tweaks
       gnomeExtensions.unite

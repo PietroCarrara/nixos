@@ -159,6 +159,7 @@ in
       yarn
       imagemagick
       lutris
+      obsidian
       unstable.cartridges
 
       gnome-online-accounts
@@ -272,6 +273,22 @@ in
       enable = true;
       config = {
         cache = "yes";
+      };
+    };
+
+    xdg.desktopEntries = {
+      fragments = {
+        name = "Fragments";
+        exec = "fragments %U";
+        terminal = false;
+        type = "Application";
+        startupNotify = true;
+        mimeType = [ "x-scheme-handler/magnet" "application/x-bittorrent" ];
+        categories = [ "GNOME" "GTK" "Utility" ];
+        settings = {
+          Keywords = "bittorrent;torrent;magnet;download;p2p;";
+          "X-Purism-FormFactor" = "Workstation;Mobile;";
+        };
       };
     };
   };

@@ -160,6 +160,7 @@ in
       imagemagick
       lutris
       obsidian
+      image-roll
       unstable.cartridges
 
       gnome-online-accounts

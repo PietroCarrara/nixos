@@ -159,6 +159,8 @@ in
       yarn
       imagemagick
       lutris
+      wine
+      winetricks
       obsidian
       libreoffice
       krita
@@ -255,6 +257,10 @@ in
       gst-plugins-ugly
       gst-libav
     ]);
+
+  environment.sessionVariables = {
+    TZ = config.time.timeZone; # Workarround for timezones
+  };
 
   services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
 

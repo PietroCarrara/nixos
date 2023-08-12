@@ -171,6 +171,7 @@ in
       unstable.gnome.geary
       gnome.gnome-sound-recorder
       gnome3.gnome-tweaks
+      gnome3.adwaita-icon-theme
       gnomeExtensions.unite
       gnomeExtensions.appindicator
       gnomeExtensions.gsconnect

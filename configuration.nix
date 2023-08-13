@@ -144,40 +144,47 @@ in
     description = "Pietro Benati Carrara";
     extraGroups = [ "networkmanager" "wheel" ];
 
-    packages = with pkgs; [
-      firefox
-      vscode
-      discord
-      nixpkgs-fmt
-      deluged
-      deluge-gtk
-      pavucontrol
-      git
-      pipewire
-      ffmpeg
-      python3
-      nodejs
-      yarn
-      imagemagick
-      lutris
-      wine
-      winetricks
-      obsidian
-      libreoffice
-      krita
-      fragments
-      unstable.cartridges
+    packages = with pkgs;
+      let
+        pip = ps: with ps; [
+          numpy
+          opencv4
+        ];
+      in
+      [
+        firefox
+        vscode
+        discord
+        nixpkgs-fmt
+        deluged
+        deluge-gtk
+        pavucontrol
+        git
+        pipewire
+        ffmpeg
+        (python3.withPackages pip)
+        nodejs
+        yarn
+        imagemagick
+        lutris
+        wine
+        winetricks
+        obsidian
+        libreoffice
+        krita
+        fragments
+        unstable.cartridges
 
-      gnome-online-accounts
-      unstable.gnome.geary
-      gnome.gnome-sound-recorder
-      gnome3.gnome-tweaks
-      gnome3.adwaita-icon-theme
-      gnomeExtensions.unite
-      gnomeExtensions.appindicator
-      gnomeExtensions.gsconnect
-      gnomeExtensions.geary-tray-icon
-    ];
+        gnome-online-accounts
+        unstable.gnome.geary
+        gnome.gnome-sound-recorder
+        gnome3.gnome-tweaks
+        gnome3.adwaita-icon-theme
+        gnomeExtensions.unite
+        gnomeExtensions.appindicator
+        gnomeExtensions.gsconnect
+        gnomeExtensions.geary-tray-icon
+      ];
   };
 
   i18n.inputMethod = {

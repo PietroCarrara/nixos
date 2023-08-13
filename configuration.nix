@@ -260,6 +260,15 @@ in
       gst-libav
     ]);
 
+  environment.interactiveShellInit = ''
+    alias v=neovim
+    alias q=exit
+
+    mkcd() {
+      mkdir -p "$1" && cd "$1"
+    }
+  '';
+
   environment.sessionVariables = {
     TZ = config.time.timeZone; # Workarround for timezones
   };

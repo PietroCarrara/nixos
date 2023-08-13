@@ -155,6 +155,7 @@ in
       git
       pipewire
       ffmpeg
+      python3
       nodejs
       yarn
       imagemagick

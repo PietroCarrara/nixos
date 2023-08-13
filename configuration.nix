@@ -270,6 +270,7 @@ in
   environment.interactiveShellInit = ''
     alias v=neovim
     alias q=exit
+    alias open=xdg-open
 
     mkcd() {
       mkdir -p "$1" && cd "$1"

@@ -32,7 +32,7 @@ in
     initrd.verbose = false;
     plymouth.enable = true;
     loader = {
-      timeout = lib.mkDefault 0;
+      timeout = 1;
       efi.canTouchEfiVariables = true;
       systemd-boot.enable = true;
     };
@@ -72,7 +72,7 @@ in
   services.xserver.enable = true;
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.wayland = true;
+  services.xserver.displayManager.gdm.wayland = false; # FUCK YOU NVIDIA
   services.xserver.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
@@ -134,10 +134,6 @@ in
     fsType = "ext4";
   };
 
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.pietro = {
     isNormalUser = true;
@@ -173,6 +169,7 @@ in
         libreoffice
         krita
         fragments
+        lollypop
         unstable.cartridges
 
         gnome-online-accounts
@@ -216,22 +213,13 @@ in
     driSupport32Bit = true;
   };
 
-  # Tell Xorg to use the nvidia driver (also valid for Wayland)
+  # Tell Xorg to use the nvidia driver (also valid for Wayland (might not work on wayland actually, FUCK YOU NVIDIA))
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
-    # Modesetting is needed for most Wayland compositors
-    # modesetting.enable = false;
-    # Use the open source version of the kernel module
-    # Only available on driver 515.43.04+
-    # open = false;
-    # Enable the nvidia settings menu
-    nvidiaSettings = true;
-    # Optionally, you may need to select the appropriate driver version for your specific GPU.
-    package = config.boot.kernelPackages.nvidiaPackages.beta;
-
+    modesetting.enable = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
     prime = {
-      offload.enable = true;
-
+      sync.enable = true;
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:4:0:0";
     };
@@ -243,18 +231,6 @@ in
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  environment.systemPackages =
-    let
-      nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
-        export __NV_PRIME_RENDER_OFFLOAD=1
-        export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
-        export __GLX_VENDOR_LIBRARY_NAME=nvidia
-        export __VK_LAYER_NV_optimus=NVIDIA_only
-        exec "$@"
-      '';
-    in
-    [ nvidia-offload ];
 
   environment.sessionVariables.GST_PLUGIN_SYSTEM_PATH_1_0 = lib.makeSearchPathOutput
     "lib"
@@ -268,7 +244,7 @@ in
     ]);
 
   environment.interactiveShellInit = ''
-    alias v=neovim
+    alias v=nvim
     alias q=exit
     alias open=xdg-open
 
@@ -286,14 +262,6 @@ in
   home-manager.useGlobalPkgs = true;
   home-manager.users.pietro = { lib, pkgs, ... }: {
     home.stateVersion = stateVersion;
-    # Overwrite steam.desktop shortcut so that is uses PRIME
-    # offloading for Steam and all its games
-    home.activation.steam = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      $DRY_RUN_CMD sed 's/^Exec=/&nvidia-offload /' \
-        ${pkgs.steam}/share/applications/steam.desktop \
-        > ~/.local/share/applications/steam.desktop
-      $DRY_RUN_CMD chmod +x ~/.local/share/applications/steam.desktop
-    '';
 
     programs.mpv = {
       enable = true;
@@ -345,4 +313,5 @@ in
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = stateVersion; # Did you read the comment?
+  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-${stateVersion}/";
 }

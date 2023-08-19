@@ -162,6 +162,7 @@ in
         nodejs
         yarn
         imagemagick
+        fusee-launcher
         lutris
         wine
         winetricks
@@ -216,6 +217,7 @@ in
   # Tell Xorg to use the nvidia driver (also valid for Wayland (might not work on wayland actually, FUCK YOU NVIDIA))
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
+    open = false;
     modesetting.enable = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
     prime = {

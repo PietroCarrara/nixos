@@ -172,6 +172,7 @@ in
         fragments
         lollypop
         unstable.cartridges
+        unstable.ns-usbloader
 
         gnome-online-accounts
         unstable.gnome.geary
@@ -259,7 +260,7 @@ in
     TZ = config.time.timeZone; # Workarround for timezones
   };
 
-  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon unstable.ns-usbloader ];
 
   home-manager.useGlobalPkgs = true;
   home-manager.users.pietro = { lib, pkgs, ... }: {

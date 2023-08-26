@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, lib, pkgs, nixpkgs-unstable, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   stateVersion = "23.05";
@@ -133,6 +133,9 @@ in
     device = "/dev/disk/by-uuid/7824aa78-c76c-4a2a-b1f3-a5aaff888406";
     fsType = "ext4";
   };
+
+  virtualisation.docker.enable = true;
+  users.extraGroups.docker.members = [ "pietro" ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.pietro = {

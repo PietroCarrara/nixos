@@ -162,6 +162,7 @@ in
         nodejs
         yarn
         imagemagick
+        p7zip
         fusee-launcher
         lutris
         wine

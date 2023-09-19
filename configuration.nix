@@ -6,8 +6,7 @@
 
 let
   stateVersion = "23.05";
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-${stateVersion}.tar.gz";
-  unstableTarball = fetchTarball https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
 in
 {
   imports =
@@ -16,14 +15,6 @@ in
       ./hardware-configuration.nix
       (import "${home-manager}/nixos")
     ];
-
-  nixpkgs.config = {
-    packageOverrides = pkgs: {
-      unstable = import unstableTarball {
-        config = config.nixpkgs.config;
-      };
-    };
-  };
 
   # Bootloader.
   boot = {
@@ -37,6 +28,7 @@ in
       systemd-boot.enable = true;
     };
     initrd.kernelModules = [ "i915" ];
+    swraid.enable = false;
   };
 
 
@@ -144,16 +136,9 @@ in
     extraGroups = [ "networkmanager" "wheel" ];
 
     packages = with pkgs;
-      let
-        pip = ps: with ps; [
-          numpy
-          opencv4
-        ];
-      in
       [
         firefox
         vscode
-        discord
         nixpkgs-fmt
         deluged
         deluge-gtk
@@ -161,12 +146,13 @@ in
         git
         pipewire
         ffmpeg
-        (python3.withPackages pip)
+        python3
         nodejs
         yarn
         imagemagick
         p7zip
         fusee-launcher
+        osu-lazer-bin
         lutris
         wine
         winetricks
@@ -175,11 +161,11 @@ in
         krita
         fragments
         lollypop
-        unstable.cartridges
-        unstable.ns-usbloader
-
+        cartridges
+        ns-usbloader
+        discord
         gnome-online-accounts
-        unstable.gnome.geary
+        gnome.geary
         gnome.gnome-sound-recorder
         gnome3.gnome-tweaks
         gnome3.adwaita-icon-theme
@@ -201,7 +187,7 @@ in
     neovim = { enable = true; defaultEditor = true; };
   };
 
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     noto-fonts
     noto-fonts-cjk
     noto-fonts-emoji
@@ -264,7 +250,7 @@ in
     TZ = config.time.timeZone; # Workarround for timezones
   };
 
-  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon unstable.ns-usbloader ];
+  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ns-usbloader ];
 
   home-manager.useGlobalPkgs = true;
   home-manager.users.pietro = { lib, pkgs, ... }: {

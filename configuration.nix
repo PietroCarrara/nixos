@@ -61,17 +61,20 @@ in
   };
 
   # Enable a windowing system (not necessarily xorg).
-  services.xserver.enable = true;
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.wayland = false; # FUCK YOU NVIDIA
-  services.xserver.desktopManager.gnome.enable = true;
+  services.xserver =
+    {
+      enable = true;
+      # Enable the GNOME Desktop Environment.
+      displayManager.gdm.enable = true;
+      displayManager.gdm.wayland = false; # FUCK YOU NVIDIA
+      desktopManager.gnome.enable = true;
 
-  # Configure keymap in X11
-  services.xserver = {
-    layout = "br";
-    xkbVariant = "";
-  };
+      digimend.enable = true;
+
+      # Configure keymap in X11
+      layout = "br";
+      xkbVariant = "";
+    };
 
   # Configure console keymap
   console.keyMap = "br-abnt2";
@@ -98,25 +101,6 @@ in
             name = "libpipewire-module-echo-cancel"
           }
         ]
-      '';
-    };
-    "wireplumber/main.lua.d/51-disable-suspension.lua" = {
-      text = ''
-        table.insert (alsa_monitor.rules, {
-          matches = {
-            {
-              -- Matches all sources.
-              { "node.name", "matches", "alsa_input.*" },
-            },
-            {
-              -- Matches all sinks.
-              { "node.name", "matches", "alsa_output.*" },
-            },
-          },
-          apply_properties = {
-            ["session.suspend-timeout-seconds"] = 0,  -- 0 disables suspend
-          },
-        })
       '';
     };
   };

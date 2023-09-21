@@ -148,6 +148,7 @@ in
         cartridges
         ns-usbloader
         discord
+
         gnome-online-accounts
         gnome.geary
         gnome.gnome-sound-recorder
@@ -157,6 +158,14 @@ in
         gnomeExtensions.appindicator
         gnomeExtensions.gsconnect
         gnomeExtensions.geary-tray-icon
+
+        gst_all_1.gstreamer
+        gst_all_1.gstreamer.dev
+        gst_all_1.gst-plugins-base
+        gst_all_1.gst-plugins-good
+        gst_all_1.gst-plugins-bad
+        gst_all_1.gst-plugins-ugly
+        gst_all_1.gst-libav
       ];
   };
 
@@ -224,6 +233,17 @@ in
     alias v=nvim
     alias q=exit
     alias open=xdg-open
+
+    prompt()
+    {
+      if [[ $? == 0 ]]; then
+        echo "$(tput setaf 5)λ$(tput sgr0) "
+      else
+        echo "$(tput setaf 1)λ$(tput sgr0) "
+      fi
+    }
+    export PS1='$(prompt)'
+
 
     mkcd() {
       mkdir -p "$1" && cd "$1"

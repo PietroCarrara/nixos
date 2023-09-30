@@ -271,36 +271,7 @@ in
         cache = "yes";
       };
     };
-
-    xdg.desktopEntries = {
-      fragments = {
-        name = "Fragments";
-        exec = "fragments %U";
-        terminal = false;
-        type = "Application";
-        startupNotify = true;
-        mimeType = [ "x-scheme-handler/magnet" "application/x-bittorrent" ];
-        categories = [ "GNOME" "GTK" "Utility" ];
-        settings = {
-          Keywords = "bittorrent;torrent;magnet;download;p2p;";
-          "X-Purism-FormFactor" = "Workstation;Mobile;";
-        };
-      };
-    };
   };
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

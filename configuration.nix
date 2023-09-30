@@ -31,6 +31,11 @@ in
     swraid.enable = false;
   };
 
+  nix.gc = {
+    automatic = true;
+    randomizedDelaySec = "14m";
+    options = "--delete-older-than 7d";
+  };
 
   networking.hostName = "hope"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.

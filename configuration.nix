@@ -171,6 +171,8 @@ in
         gst_all_1.gst-plugins-bad
         gst_all_1.gst-plugins-ugly
         gst_all_1.gst-libav
+
+        (pkgs.writeShellScriptBin "flac2mp3" (builtins.readFile ./scripts/flac2mp3.sh))
       ];
   };
 
@@ -248,7 +250,6 @@ in
       fi
     }
     export PS1='$(prompt)'
-
 
     mkcd() {
       mkdir -p "$1" && cd "$1"

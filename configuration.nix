@@ -11,12 +11,10 @@ in
 {
   imports =
     [
-      # Include the results of the hardware scan.
       ./hardware-configuration.nix
       (import "${home-manager}/nixos")
     ];
 
-  # Bootloader.
   boot = {
     kernelParams = [ "quiet" "splash" ];
     consoleLogLevel = 0;
@@ -37,20 +35,11 @@ in
     options = "--delete-older-than 7d";
   };
 
-  networking.hostName = "hope"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
+  networking.hostName = "hope";
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
   time.timeZone = "America/Sao_Paulo";
 
-  # Select internationalisation properties.
   i18n.defaultLocale = "pt_BR.UTF-8";
 
   i18n.extraLocaleSettings = {
@@ -69,25 +58,20 @@ in
   services.xserver =
     {
       enable = true;
-      # Enable the GNOME Desktop Environment.
       displayManager.gdm.enable = true;
       displayManager.gdm.wayland = false; # FUCK YOU NVIDIA
       desktopManager.gnome.enable = true;
 
       digimend.enable = true;
 
-      # Configure keymap in X11
       layout = "br";
       xkbVariant = "";
     };
 
-  # Configure console keymap
   console.keyMap = "br-abnt2";
 
-  # Enable CUPS to print documents.
   services.printing.enable = true;
 
-  # Enable sound with pipewire.
   sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -118,7 +102,6 @@ in
   virtualisation.docker.enable = true;
   users.extraGroups.docker.members = [ "pietro" ];
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.pietro = {
     isNormalUser = true;
     description = "Pietro Benati Carrara";
@@ -204,7 +187,6 @@ in
     liberation_ttf
   ];
 
-  # Enable automatic login for the user.
   services.xserver.displayManager.autoLogin.enable = true;
   services.xserver.displayManager.autoLogin.user = "pietro";
 
@@ -232,7 +214,6 @@ in
   systemd.services."getty@tty1".enable = false;
   systemd.services."autovt@tty1".enable = false;
 
-  # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   environment.sessionVariables.GST_PLUGIN_SYSTEM_PATH_1_0 = lib.makeSearchPathOutput
@@ -272,23 +253,8 @@ in
 
   services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ns-usbloader ];
 
-  home-manager.useGlobalPkgs = true;
-  home-manager.users.pietro = { lib, pkgs, ... }: {
-    home.stateVersion = stateVersion;
-  };
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
   networking.firewall.enable = false;
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = stateVersion; # Did you read the comment?
   system.autoUpgrade.channel = "https://nixos.org/channels/nixos-${stateVersion}/";
 }

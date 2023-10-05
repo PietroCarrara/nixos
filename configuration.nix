@@ -133,6 +133,7 @@ in
         krita
         fragments
         lollypop
+        tagger
         cartridges
         ns-usbloader
         discord

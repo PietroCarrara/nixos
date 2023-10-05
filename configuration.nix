@@ -173,6 +173,16 @@ in
         gst_all_1.gst-libav
 
         (pkgs.writeShellScriptBin "flac2mp3" (builtins.readFile ./scripts/flac2mp3.sh))
+
+        (mpv.override {
+          scripts = [
+            mpvScripts.mpris
+          ];
+          extraMakeWrapperArgs = [
+            "--add-flags"
+            "--cache=yes"
+          ];
+        })
       ];
   };
 
@@ -265,13 +275,6 @@ in
   home-manager.useGlobalPkgs = true;
   home-manager.users.pietro = { lib, pkgs, ... }: {
     home.stateVersion = stateVersion;
-
-    programs.mpv = {
-      enable = true;
-      config = {
-        cache = "yes";
-      };
-    };
   };
 
   # Open ports in the firewall.

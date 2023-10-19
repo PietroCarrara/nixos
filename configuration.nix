@@ -133,6 +133,7 @@ in
         krita
         fragments
         lollypop
+        foliate
         tagger
         cartridges
         ns-usbloader

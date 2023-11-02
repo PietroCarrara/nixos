@@ -82,17 +82,6 @@ in
     pulse.enable = true;
     wireplumber.enable = true;
   };
-  environment.etc = {
-    "pipewire/pipewire.conf.d/91-echo-cancel.conf" = {
-      text = ''
-        context.modules = [
-          {
-            name = "libpipewire-module-echo-cancel"
-          }
-        ]
-      '';
-    };
-  };
 
   fileSystems."/mnt/data" = {
     device = "/dev/disk/by-uuid/7824aa78-c76c-4a2a-b1f3-a5aaff888406";

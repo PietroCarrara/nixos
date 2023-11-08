@@ -73,15 +73,8 @@ in
   services.printing.enable = true;
 
   sound.enable = true;
-  hardware.pulseaudio.enable = false;
+  hardware.pulseaudio.enable = true;
   security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    wireplumber.enable = true;
-  };
 
   fileSystems."/mnt/data" = {
     device = "/dev/disk/by-uuid/7824aa78-c76c-4a2a-b1f3-a5aaff888406";
@@ -89,12 +82,25 @@ in
   };
 
   virtualisation.docker.enable = true;
-  users.extraGroups.docker.members = [ "pietro" ];
+
+  nixpkgs.config = {
+    allowUnfree = true;
+
+    packageOverrides = pkgs: {
+      foliate = pkgs.foliate.overrideAttrs
+        (old: {
+          buildInputs = old.buildInputs ++ [ pkgs.makeWrapper ];
+          postFixup = old.postFixup or "" + ''
+            wrapProgram "$out/bin/foliate" --set WEBKIT_DISABLE_COMPOSITING_MODE 1
+          '';
+        });
+    };
+  };
 
   users.users.pietro = {
     isNormalUser = true;
     description = "Pietro Benati Carrara";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "audio" "docker" ];
 
     packages = with pkgs;
       [
@@ -105,7 +111,6 @@ in
         deluge-gtk
         pavucontrol
         git
-        pipewire
         ffmpeg
         python3
         nodejs
@@ -204,8 +209,6 @@ in
   # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
   systemd.services."getty@tty1".enable = false;
   systemd.services."autovt@tty1".enable = false;
-
-  nixpkgs.config.allowUnfree = true;
 
   environment.sessionVariables.GST_PLUGIN_SYSTEM_PATH_1_0 = lib.makeSearchPathOutput
     "lib"

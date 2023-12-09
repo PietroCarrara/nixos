@@ -94,6 +94,16 @@ in
             wrapProgram "$out/bin/foliate" --set WEBKIT_DISABLE_COMPOSITING_MODE 1
           '';
         });
+      ibus = pkgs.ibus.overrideAttrs
+        (old: {
+          patches = (old.patches or [ ]) ++ [
+            # This commit fixes "sticky" input on wine. It'll become obsolete once 1.5.29 releases
+            (fetchpatch {
+              url = "https://github.com/ibus/ibus/commit/497f0c74230a65309e22ce5569060ce48310406b.patch";
+              hash = "sha256-PAZcUxmzjChs1/K8hXgOcytyS4LYoNL1dtU6X5Tx8ic=";
+            })
+          ];
+        });
     };
   };
 
@@ -141,7 +151,6 @@ in
         gnomeExtensions.unite
         gnomeExtensions.appindicator
         gnomeExtensions.gsconnect
-        gnomeExtensions.geary-tray-icon
 
         gst_all_1.gstreamer
         gst_all_1.gstreamer.dev

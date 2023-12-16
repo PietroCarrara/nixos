@@ -135,7 +135,6 @@ in
         lutris
         wine
         winetricks
-        obsidian
         libreoffice
         krita
         fragments

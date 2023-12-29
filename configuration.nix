@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, lib, pkgs, fetchpatch, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   stateVersion = "23.05";
@@ -103,29 +103,7 @@ in
 
   virtualisation.docker.enable = true;
 
-  nixpkgs.config = {
-    allowUnfree = true;
-
-    packageOverrides = pkgs: {
-      foliate = pkgs.foliate.overrideAttrs
-        (old: {
-          buildInputs = old.buildInputs ++ [ pkgs.makeWrapper ];
-          postFixup = old.postFixup or "" + ''
-            wrapProgram "$out/bin/foliate" --set WEBKIT_DISABLE_COMPOSITING_MODE 1
-          '';
-        });
-      ibus = pkgs.ibus.overrideAttrs
-        (old: {
-          patches = (old.patches or [ ]) ++ [
-            # This commit fixes "sticky" input on wine. It'll become obsolete once 1.5.29 releases
-            # (fetchpatch {
-            #   url = "https://github.com/ibus/ibus/commit/497f0c74230a65309e22ce5569060ce48310406b.patch";
-            #   hash = "sha256-PAZcUxmzjChs1/K8hXgOcytyS4LYoNL1dtU6X5Tx8ic=";
-            # })
-          ];
-        });
-    };
-  };
+  nixpkgs.config.allowUnfree = true;
 
   users.users.pietro = {
     isNormalUser = true;

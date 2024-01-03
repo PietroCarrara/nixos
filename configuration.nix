@@ -26,7 +26,6 @@ in
       systemd-boot.enable = true;
     };
     initrd.kernelModules = [ "i915" ];
-    swraid.enable = false;
   };
 
   nix.gc = {
@@ -103,7 +102,21 @@ in
 
   virtualisation.docker.enable = true;
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs = {
+    config.allowUnfree = true;
+    overlays = [
+      (final: prev: {
+        ibus = prev.ibus.overrideAttrs {
+          patches = prev.ibus.patches ++ [
+            (prev.fetchpatch {
+              url = "https://github.com/ibus/ibus/commit/497f0c74230a65309e22ce5569060ce48310406b.patch";
+              hash = "sha256-PAZcUxmzjChs1/K8hXgOcytyS4LYoNL1dtU6X5Tx8ic=";
+            })
+          ];
+        };
+      })
+    ];
+  };
 
   users.users.pietro = {
     isNormalUser = true;
@@ -136,8 +149,6 @@ in
         lollypop
         foliate
         tagger
-        cartridges
-        ns-usbloader
         discord
 
         gnome-online-accounts
@@ -182,7 +193,7 @@ in
     neovim = { enable = true; defaultEditor = true; };
   };
 
-  fonts.packages = with pkgs; [
+  fonts.fonts = with pkgs; [
     noto-fonts
     noto-fonts-cjk
     noto-fonts-emoji
@@ -251,7 +262,7 @@ in
     TZ = config.time.timeZone; # Workarround for timezones
   };
 
-  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ns-usbloader ];
+  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
 
   networking.firewall.enable = false;
 

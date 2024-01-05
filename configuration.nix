@@ -6,13 +6,11 @@
 
 let
   stateVersion = "23.05";
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
 in
 {
   imports =
     [
       ./hardware-configuration.nix
-      (import "${home-manager}/nixos")
     ];
 
   boot = {

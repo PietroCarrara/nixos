@@ -121,6 +121,10 @@ in
     description = "Pietro Benati Carrara";
     extraGroups = [ "networkmanager" "wheel" "audio" "docker" ];
 
+    openssh.authorizedKeys.keys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCeG3EUJYQanCRC5bffvsUyCQc35PbBPBc1Yvq8yyW/Sh9E4DoryM8xeGufcO8L/cshjvzPK51s4+7AiDz9Cw2YygV/jxKCGtcTnWUUDOc36kuvVi+zusRwNPCV4HvE3EaPVdF3R9Kv5JE3N9uZywTA7k1In2naIUURZvWsfKX+LjBWvkCMYMIn+wQrm9eGjhOY3+wAsOqanLCkZEb7ltn4UlY+kz5v1OHOGZkeqznk0JQ4qk/71mUxDc9v9STwmvNf4+s2oIQykqNizyFnsBWJ2dFhg+K65sruZVzAdb1HNYgj/TWsibqFICqpmiqmrWZ6/+r2PGH3oCPNXQF0CXDv Redmi"
+    ];
+
     packages = with pkgs;
       [
         firefox
@@ -260,7 +264,15 @@ in
     TZ = config.time.timeZone; # Workarround for timezones
   };
 
-  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+  services = {
+    udev.packages = with pkgs; [ gnome.gnome-settings-daemon ns-usbloader ];
+    openssh = {
+      enable = true;
+      settings.PasswordAuthentication = false;
+      settings.KbdInteractiveAuthentication = false;
+
+    };
+  };
 
   networking.firewall.enable = false;
 

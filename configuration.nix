@@ -123,6 +123,7 @@ in
         git
         ffmpeg
         python3
+        go
         nodejs
         yarn
         imagemagick

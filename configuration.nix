@@ -24,6 +24,7 @@ in
       systemd-boot.enable = true;
     };
     initrd.kernelModules = [ "i915" ];
+    swraid.enable = false;
   };
 
   nix.gc = {
@@ -100,21 +101,7 @@ in
 
   virtualisation.docker.enable = true;
 
-  nixpkgs = {
-    config.allowUnfree = true;
-    overlays = [
-      (final: prev: {
-        ibus = prev.ibus.overrideAttrs {
-          patches = prev.ibus.patches ++ [
-            (prev.fetchpatch {
-              url = "https://github.com/ibus/ibus/commit/497f0c74230a65309e22ce5569060ce48310406b.patch";
-              hash = "sha256-PAZcUxmzjChs1/K8hXgOcytyS4LYoNL1dtU6X5Tx8ic=";
-            })
-          ];
-        };
-      })
-    ];
-  };
+  nixpkgs.config.allowUnfree = true;
 
   users.users.pietro = {
     isNormalUser = true;
@@ -151,6 +138,8 @@ in
         lollypop
         foliate
         tagger
+        cartridges
+        ns-usbloader
         discord
 
         gnome-online-accounts
@@ -195,7 +184,7 @@ in
     neovim = { enable = true; defaultEditor = true; };
   };
 
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     noto-fonts
     noto-fonts-cjk
     noto-fonts-emoji

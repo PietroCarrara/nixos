@@ -6,6 +6,7 @@
 
 let
   stateVersion = "23.05";
+  env = import ./env.nix;
 in
 {
   imports =
@@ -60,8 +61,8 @@ in
     {
       enable = true;
       displayManager.gdm.enable = true;
-      displayManager.gdm.wayland = false; # FUCK YOU NVIDIA
       desktopManager.gnome.enable = true;
+      displayManager.gdm.wayland = !env.nvidia; # FUCK YOU NVIDIA
 
       digimend.enable = true;
 
@@ -94,11 +95,6 @@ in
       	'';
   };
 
-  fileSystems."/mnt/data" = {
-    device = "/dev/disk/by-uuid/7824aa78-c76c-4a2a-b1f3-a5aaff888406";
-    fsType = "ext4";
-  };
-
   virtualisation.docker.enable = true;
 
   nixpkgs.config.allowUnfree = true;
@@ -117,8 +113,6 @@ in
         firefox
         vscode
         nixpkgs-fmt
-        deluged
-        deluge-gtk
         pavucontrol
         git
         ffmpeg
@@ -128,20 +122,16 @@ in
         yarn
         imagemagick
         p7zip
-        fusee-launcher
-        osu-lazer-bin
-        lutris
-        wine
-        winetricks
         libreoffice
         krita
         fragments
         lollypop
         foliate
         tagger
-        cartridges
-        ns-usbloader
         discord
+        fusee-launcher
+        ns-usbloader
+
 
         gnome-online-accounts
         gnome.geary
@@ -171,7 +161,15 @@ in
             "--cache=yes"
           ];
         })
-      ];
+      ]
+      ++
+      (lib.optionals (!env.work) [
+        osu-lazer-bin
+        lutris
+        wine
+        winetricks
+        cartridges
+      ]);
   };
 
   i18n.inputMethod = {
@@ -180,7 +178,7 @@ in
   };
 
   programs = {
-    steam.enable = true;
+    steam.enable = !env.work;
     xwayland.enable = true;
     neovim = { enable = true; defaultEditor = true; };
   };
@@ -203,8 +201,8 @@ in
   };
 
   # Tell Xorg to use the nvidia driver (also valid for Wayland (might not work on wayland actually, FUCK YOU NVIDIA))
-  services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.nvidia = {
+  services.xserver.videoDrivers = lib.optional env.nvidia "nvidia";
+  hardware.nvidia = lib.optionalAttrs env.nvidia {
     open = false;
     modesetting.enable = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
@@ -260,7 +258,6 @@ in
       enable = true;
       settings.PasswordAuthentication = false;
       settings.KbdInteractiveAuthentication = false;
-
     };
   };
 

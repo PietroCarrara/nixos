@@ -1,0 +1,4 @@
+{
+  nvidia = true;
+  work = false;
+}

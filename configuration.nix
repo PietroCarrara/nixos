@@ -172,8 +172,8 @@ in
       ])
       ++
       (lib.optionals env.work [
+        dotnet-sdk
         slack
-        github-desktop
         terraform
       ]);
   };

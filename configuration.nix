@@ -174,6 +174,7 @@ in
       (lib.optionals env.work [
         slack
         github-desktop
+        terraform
       ]);
   };
 

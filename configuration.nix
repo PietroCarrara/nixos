@@ -5,7 +5,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  stateVersion = "23.05";
+  stateVersion = "23.11";
   env = import ./env.nix;
 in
 {
@@ -66,8 +66,8 @@ in
 
       digimend.enable = true;
 
-      layout = "br";
-      xkbVariant = "";
+      xkb.layout = "br";
+      xkb.variant = "";
     };
 
   console.keyMap = "br-abnt2";
@@ -169,6 +169,11 @@ in
         wine
         winetricks
         cartridges
+      ])
+      ++
+      (lib.optionals env.work [
+        slack
+        github-desktop
       ]);
   };
 

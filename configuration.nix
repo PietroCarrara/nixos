@@ -5,7 +5,6 @@
 { config, lib, pkgs, ... }:
 
 let
-  stateVersion = "23.11";
   env = import ./env.nix;
 in
 {
@@ -269,6 +268,5 @@ in
 
   networking.firewall.enable = false;
 
-  system.stateVersion = stateVersion; # Did you read the comment?
-  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-${stateVersion}/";
+  system.stateVersion = env.stateVersion;
 }

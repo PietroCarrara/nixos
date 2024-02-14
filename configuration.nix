@@ -173,6 +173,7 @@ in
       (lib.optionals env.work [
         dotnet-sdk
         slack
+        awscli
         terraform
       ]);
   };

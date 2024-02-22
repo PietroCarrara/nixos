@@ -239,16 +239,6 @@ in
     alias q=exit
     alias open=xdg-open
 
-    prompt()
-    {
-      if [[ $? == 0 ]]; then
-        echo "$(tput setaf 5)λ$(tput sgr0) "
-      else
-        echo "$(tput setaf 1)λ$(tput sgr0) "
-      fi
-    }
-    export PS1='$(prompt)'
-
     mkcd() {
       mkdir -p "$1" && cd "$1"
     }

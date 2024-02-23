@@ -223,6 +223,8 @@ in
   systemd.services."getty@tty1".enable = false;
   systemd.services."autovt@tty1".enable = false;
 
+  environment.sessionVariables.NIX_AUTO_RUN = "ENABLE";
+
   environment.sessionVariables.GST_PLUGIN_SYSTEM_PATH_1_0 = lib.makeSearchPathOutput
     "lib"
     "lib/gstreamer-1.0"

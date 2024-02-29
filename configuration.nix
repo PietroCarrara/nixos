@@ -227,7 +227,11 @@ in
   systemd.services."getty@tty1".enable = false;
   systemd.services."autovt@tty1".enable = false;
 
-  environment.sessionVariables.NIX_AUTO_RUN = "ENABLE";
+  environment.sessionVariables = {
+    NIX_AUTO_RUN = "ENABLE";
+    # You'll have to install the SDK via android studio to this folder, I'm too busy to make this with a nix file
+    ANDROID_HOME = lib.optional env.work "/home/pietro/Android/Sdk";
+  };
 
   environment.sessionVariables.GST_PLUGIN_SYSTEM_PATH_1_0 = lib.makeSearchPathOutput
     "lib"

@@ -175,6 +175,10 @@ in
         slack
         awscli
         terraform
+        jdk17
+        android-tools
+        android-studio
+        (callPackage ./nix/azuredatastudio.nix { })
       ]);
   };
 

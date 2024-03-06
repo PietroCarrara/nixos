@@ -33,8 +33,14 @@ in
     options = "--delete-older-than 7d";
   };
 
-  networking.hostName = "hope";
-  networking.networkmanager.enable = true;
+  networking = {
+    hostName = "hope";
+    networkmanager.enable = true;
+    firewall.enable = false;
+    # extraHosts = ''
+    #   15.228.191.142 api.mobiltracker.com.br
+    # '';
+  };
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
@@ -61,7 +67,7 @@ in
       enable = true;
       displayManager.gdm.enable = true;
       desktopManager.gnome.enable = true;
-      displayManager.gdm.wayland = !env.nvidia; # FUCK YOU NVIDIA
+      displayManager.gdm.wayland = false;
 
       digimend.enable = true;
 
@@ -100,7 +106,6 @@ in
     packages = with pkgs;
       [
         firefox
-        vscode
         nixpkgs-fmt
         pavucontrol
         git
@@ -163,13 +168,16 @@ in
         wine
         winetricks
         cartridges
+        vscode
       ])
       ++
       (lib.optionals env.work [
+        vscode-fhs
         dotnet-sdk
         slack
         awscli
         terraform
+        packer
         jdk17
         android-tools
         android-studio
@@ -184,7 +192,6 @@ in
 
   programs = {
     steam.enable = !env.work;
-    xwayland.enable = true;
     neovim = { enable = true; defaultEditor = true; };
   };
 
@@ -205,7 +212,7 @@ in
     driSupport32Bit = true;
   };
 
-  # Tell Xorg to use the nvidia driver (also valid for Wayland (might not work on wayland actually, FUCK YOU NVIDIA))
+  # Tell Xorg to use the nvidia driver (also valid for Wayland)
   services.xserver.videoDrivers = lib.optional env.nvidia "nvidia";
   hardware.nvidia = lib.optionalAttrs env.nvidia {
     open = false;
@@ -261,8 +268,6 @@ in
       settings.KbdInteractiveAuthentication = false;
     };
   };
-
-  networking.firewall.enable = false;
 
   system.stateVersion = env.stateVersion;
 }

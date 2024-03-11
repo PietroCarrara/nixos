@@ -44,6 +44,7 @@ in
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
+  hardware.enableAllFirmware = true;
 
   time.timeZone = "America/Sao_Paulo";
 
@@ -115,6 +116,7 @@ in
           pip.requests
           pip.cloudscraper
           pip.lxml
+          pip.beautifulsoup4
         ]))
         go
         nodejs
@@ -192,6 +194,11 @@ in
 
   programs = {
     steam.enable = !env.work;
+    wireshark = {
+      enable = true;
+      package = pkgs.wireshark;
+    };
+    xwayland.enable = true;
     neovim = { enable = true; defaultEditor = true; };
   };
 

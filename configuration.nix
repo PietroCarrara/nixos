@@ -80,6 +80,18 @@ in
 
   services.printing.enable = true;
 
+  services.transmission = {
+    enable = !env.work;
+    user = "pietro";
+    home = "/home/pietro/";
+
+    settings = {
+      utp-enabled = true;
+      incomplete-dir = "/home/pietro/Downloads/torrents/incomplete";
+      download-dir = "/home/pietro/Downloads/torrents";
+    };
+  };
+
   sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -125,14 +137,12 @@ in
         p7zip
         libreoffice
         krita
-        fragments
         lollypop
         foliate
         tagger
         discord
         fusee-launcher
         ns-usbloader
-
 
         gnome-online-accounts
         gnome.geary

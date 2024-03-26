@@ -82,6 +82,7 @@ in
 
   services.transmission = {
     enable = !env.work;
+    package = pkgs.transmission_4;
     user = "pietro";
     home = "/home/pietro/";
 
@@ -181,6 +182,7 @@ in
         winetricks
         cartridges
         vscode
+        transmission-remote-gtk
       ])
       ++
       (lib.optionals env.work [

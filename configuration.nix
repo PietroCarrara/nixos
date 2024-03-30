@@ -90,6 +90,7 @@ in
       utp-enabled = true;
       incomplete-dir = "/home/pietro/Downloads/torrents/incomplete";
       download-dir = "/home/pietro/Downloads/torrents";
+      download-queue-enabled = false;
     };
   };
 

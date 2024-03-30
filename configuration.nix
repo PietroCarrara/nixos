@@ -80,11 +80,16 @@ in
 
   services.printing.enable = true;
 
+  # Bind paths for transmission (so I can move my downloads to ~/Movies, ~/Music, etc...)
+  systemd.services.transmission.serviceConfig.BindPaths = [
+    "/home/pietro"
+    "/mnt"
+  ];
   services.transmission = {
     enable = !env.work;
     package = pkgs.transmission_4;
     user = "pietro";
-    home = "/home/pietro/";
+    home = "/home/pietro";
 
     settings = {
       utp-enabled = true;

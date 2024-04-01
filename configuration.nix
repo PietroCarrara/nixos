@@ -187,6 +187,7 @@ in
       ])
       ++
       (lib.optionals env.work [
+        rustup
         vscode-fhs
         dotnet-sdk
         slack

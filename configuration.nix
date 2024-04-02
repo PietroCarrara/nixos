@@ -132,6 +132,7 @@ in
           pip.lxml
           pip.beautifulsoup4
         ]))
+        clang
         go
         nodejs
         yarn

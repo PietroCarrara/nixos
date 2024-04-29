@@ -224,8 +224,8 @@ in
     liberation_ttf
   ];
 
-  services.xserver.displayManager.autoLogin.enable = true;
-  services.xserver.displayManager.autoLogin.user = "pietro";
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = "pietro";
 
   # Make sure opengl is enabled
   hardware.opengl = {

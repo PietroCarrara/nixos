@@ -89,8 +89,9 @@ in
     settings = {
       utp-enabled = true;
       incomplete-dir = "/home/pietro/Downloads/torrents/incomplete";
-      download-dir = "/home/pietro/Downloads/torrents";
+      download-dir = "/home/pietro/Downloads/torrents/incomplete"; # Legacy compat
       download-queue-enabled = false;
+      rpc-whitelist-enabled = false;
     };
   };
 
@@ -250,6 +251,7 @@ in
   # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
   systemd.services."getty@tty1".enable = false;
   systemd.services."autovt@tty1".enable = false;
+  services.logind.lidSwitch = "ignore"; # Don't suspend on laptop lid closed
 
   environment.sessionVariables = {
     NIX_AUTO_RUN = "ENABLE";

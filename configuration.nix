@@ -92,6 +92,7 @@ in
       download-dir = "/home/pietro/Downloads/torrents/incomplete"; # Legacy compat
       download-queue-enabled = false;
       rpc-whitelist-enabled = false;
+      rpc-bind-address = "0.0.0.0";
     };
   };
 

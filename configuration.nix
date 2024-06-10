@@ -219,12 +219,17 @@ in
     neovim = { enable = true; defaultEditor = true; };
   };
 
-  fonts.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk
-    noto-fonts-emoji
-    liberation_ttf
-  ];
+  fonts = {
+    fontconfig = {
+      subpixel.rgba = "rgb";
+    };
+    packages = with pkgs; [
+      noto-fonts
+      noto-fonts-cjk
+      noto-fonts-emoji
+      liberation_ttf
+    ];
+  };
 
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "pietro";

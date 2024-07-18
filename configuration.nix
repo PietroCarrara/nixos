@@ -258,25 +258,26 @@ in
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "pietro";
 
-  # Make sure opengl is enabled
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
-
   # Tell Xorg to use the nvidia driver (also valid for Wayland)
-  services.xserver.videoDrivers = lib.optional env.nvidia "nvidia";
-  hardware.nvidia = lib.optionalAttrs env.nvidia {
-    open = false;
-    modesetting.enable = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-    prime = {
-      sync.enable = true;
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:4:0:0";
-    };
+  services.xserver.videoDrivers = lib.optional
+    env.nvidia
+    "nvidia";
+  hardware.graphics = {
+    enable = true;
+    extraPackages = lib.optionals env.intel (with pkgs; [ intel-media-driver intel-ocl intel-vaapi-driver ]);
   };
+  hardware.nvidia = lib.optionalAttrs
+    env.nvidia
+    {
+      open = false;
+      modesetting.enable = true;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      prime = {
+        sync.enable = true;
+        intelBusId = "PCI:0:2:0";
+        nvidiaBusId = "PCI:4:0:0";
+      };
+    };
 
   # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
   systemd.services."getty@tty1".enable = false;
@@ -287,6 +288,7 @@ in
     NIX_AUTO_RUN = "ENABLE";
     # You'll have to install the SDK via android studio to this folder, I'm too busy to make this with a nix file
     ANDROID_HOME = lib.optional env.work "/home/pietro/Android/Sdk";
+    LIBVA_DRIVER_NAME = lib.optional env.intel "iHD";
   };
 
   environment.sessionVariables.GST_PLUGIN_SYSTEM_PATH_1_0 = lib.makeSearchPathOutput
@@ -321,6 +323,7 @@ in
       settings.PasswordAuthentication = false;
       settings.KbdInteractiveAuthentication = false;
     };
+    fstrim.enable = lib.mkDefault true; # nix-hardware for ssd
   };
 
   system.stateVersion = env.stateVersion;

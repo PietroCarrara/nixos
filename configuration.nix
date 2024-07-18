@@ -159,18 +159,17 @@ in
         p7zip
         libreoffice
         krita
-        lollypop
         foliate
-        tagger
+        eartag
+        geary
         discord
         fusee-launcher
         ns-usbloader
 
         gnome-online-accounts
-        gnome.geary
+        gnome-tweaks
+        adwaita-icon-theme
         gnome.gnome-sound-recorder
-        gnome3.gnome-tweaks
-        gnome3.adwaita-icon-theme
         gnomeExtensions.unite
         gnomeExtensions.appindicator
         gnomeExtensions.gsconnect
@@ -184,6 +183,7 @@ in
         gst_all_1.gst-libav
 
         (pkgs.writeShellScriptBin "flac2mp3" (builtins.readFile ./scripts/flac2mp3.sh))
+        (pkgs.writeShellScriptBin "cue2flac" ((import ./scripts/cue2flac.sh.nix) { inherit cuetools; }))
 
         (mpv.override {
           scripts = [
@@ -193,6 +193,12 @@ in
             "--add-flags"
             "--cache=yes"
           ];
+        })
+
+        (lollypop.override {
+          lastFMSupport = false;
+          youtubeSupport = false;
+          kid3Support = false;
         })
       ]
       ++

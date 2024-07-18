@@ -109,7 +109,25 @@ in
 
   virtualisation.docker.enable = true;
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+
+    packageOverrides = pkgs: {
+      # https://github.com/ibus/ibus/issues/2656
+      # https://github.com/ibus/ibus/issues/2618
+      ibus = pkgs.ibus.overrideAttrs
+        (old: rec {
+          version = "1.5.29";
+          src = pkgs.fetchFromGitHub {
+            owner = "ibus";
+            repo = "ibus";
+            rev = version;
+            sha256 = "sha256-d4EUIg0v8rfHdvzG5USc6GLY6QHtQpIJp1PrPaaBxxE=";
+          };
+        });
+    };
+  };
+
 
   users.users.pietro = {
     isNormalUser = true;

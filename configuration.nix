@@ -23,7 +23,6 @@ in
       efi.canTouchEfiVariables = true;
       systemd-boot.enable = true;
     };
-    initrd.kernelModules = [ "i915" ];
     swraid.enable = false;
   };
 
@@ -273,7 +272,8 @@ in
       modesetting.enable = true;
       package = config.boot.kernelPackages.nvidiaPackages.stable;
       prime = {
-        sync.enable = true;
+        offload.enableOffloadCmd = true;
+        reverseSync.enable = true;
         intelBusId = "PCI:0:2:0";
         nvidiaBusId = "PCI:4:0:0";
       };

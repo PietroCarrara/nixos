@@ -6,11 +6,14 @@
 
 let
   env = import ./env.nix;
+  aagl-gtk-on-nix = import (builtins.fetchTarball "https://github.com/ezKEa/aagl-gtk-on-nix/archive/main.tar.gz");
+  aaglPkgs = aagl-gtk-on-nix.withNixpkgs pkgs;
 in
 {
   imports =
     [
       ./hardware-configuration.nix
+      aaglPkgs.module
     ];
 
   boot = {
@@ -234,6 +237,7 @@ in
 
   programs = {
     steam.enable = !env.work;
+    honkers-railway-launcher.enable = !env.work;
     wireshark = {
       enable = true;
       package = pkgs.wireshark;

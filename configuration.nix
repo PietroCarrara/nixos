@@ -223,7 +223,7 @@ in
         vscode-fhs
         dotnet-sdk
         slack
-        awscli
+        awscli2
         terraform
         packer
         jdk17
@@ -314,6 +314,7 @@ in
     alias v=nvim
     alias q=exit
     alias open=xdg-open
+    alias xq="python -c 'import sys, xml.dom.minidom; print(xml.dom.minidom.parseString(sys.stdin.read()).toprettyxml())'"
 
     mkcd() {
       mkdir -p "$1" && cd "$1"

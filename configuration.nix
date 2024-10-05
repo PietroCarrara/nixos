@@ -168,10 +168,14 @@ in
         fusee-launcher
         ns-usbloader
 
+        # Godot+VR for this semester
+        monado
+        godot_4
+
         gnome-online-accounts
         gnome-tweaks
         adwaita-icon-theme
-        gnome.gnome-sound-recorder
+        gnome-sound-recorder
         gnomeExtensions.unite
         gnomeExtensions.appindicator
         gnomeExtensions.gsconnect
@@ -321,7 +325,7 @@ in
   };
 
   services = {
-    udev.packages = with pkgs; [ gnome.gnome-settings-daemon ns-usbloader ];
+    udev.packages = with pkgs; [ gnome-settings-daemon ns-usbloader ];
     openssh = {
       enable = true;
       settings.PasswordAuthentication = false;

@@ -6,11 +6,13 @@
 
 let
   env = import ./env.nix;
+  aagl-gtk-on-nix = import (builtins.fetchTarball "https://github.com/ezKEa/aagl-gtk-on-nix/archive/main.tar.gz");
 in
 {
   imports =
     [
       ./hardware-configuration.nix
+      aagl-gtk-on-nix.module
     ];
 
   boot = {
@@ -25,6 +27,8 @@ in
     };
     swraid.enable = false;
   };
+
+  nix.settings = aagl-gtk-on-nix.nixConfig; # Set up Cachix for aagl
 
   nix.gc = {
     automatic = true;
@@ -93,6 +97,10 @@ in
       rpc-whitelist-enabled = false;
       rpc-bind-address = "0.0.0.0";
     };
+  };
+
+  services.sunshine = {
+    enable = !env.work;
   };
 
   hardware.pulseaudio.enable = false;

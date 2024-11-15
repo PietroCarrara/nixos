@@ -16,7 +16,7 @@ in
     ];
 
   boot = {
-    kernelParams = [ "quiet" "splash" ];
+    kernelParams = [ "quiet" "splash" ] ++ (lib.optionals env.intel [ "i915.enable_dc=0" "i915.enable_psr=0" ]);
     consoleLogLevel = 0;
     initrd.verbose = false;
     plymouth.enable = true;
@@ -252,6 +252,7 @@ in
     };
     xwayland.enable = true;
     neovim = { enable = true; defaultEditor = true; };
+    honkers-railway-launcher.enable = !env.work;
   };
 
   fonts = {
@@ -282,7 +283,7 @@ in
     {
       open = false;
       modesetting.enable = true;
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      package = config.boot.kernelPackages.nvidiaPackages.latest;
       prime = {
         offload.enableOffloadCmd = true;
         reverseSync.enable = true;

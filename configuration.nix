@@ -234,7 +234,7 @@ in
         jdk17
         android-tools
         android-studio
-        (callPackage ./nix/azuredatastudio.nix { })
+        dbeaver-bin
       ]);
   };
 

@@ -117,20 +117,24 @@ in
 
   nixpkgs.config = {
     allowUnfree = true;
+    permittedInsecurePackages = [
+      "dotnet-sdk-wrapped-6.0.428"
+      "dotnet-sdk-6.0.428"
+    ];
 
     packageOverrides = pkgs: {
       # https://github.com/ibus/ibus/issues/2656
       # https://github.com/ibus/ibus/issues/2618
-      ibus = pkgs.ibus.overrideAttrs
-        (old: rec {
-          version = "1.5.29";
-          src = pkgs.fetchFromGitHub {
-            owner = "ibus";
-            repo = "ibus";
-            rev = version;
-            sha256 = "sha256-d4EUIg0v8rfHdvzG5USc6GLY6QHtQpIJp1PrPaaBxxE=";
-          };
-        });
+      # ibus = pkgs.ibus.overrideAttrs
+      #   (old: rec {
+      #     version = "1.5.29";
+      #     src = pkgs.fetchFromGitHub {
+      #       owner = "ibus";
+      #       repo = "ibus";
+      #       rev = version;
+      #       sha256 = "sha256-d4EUIg0v8rfHdvzG5USc6GLY6QHtQpIJp1PrPaaBxxE=";
+      #     };
+      #   });
     };
   };
 
@@ -226,7 +230,6 @@ in
       (lib.optionals env.work [
         rustup
         vscode-fhs
-        dotnet-sdk
         slack
         awscli2
         terraform
@@ -235,6 +238,7 @@ in
         android-tools
         android-studio
         dbeaver-bin
+        pkgs.dotnet-sdk_6
       ]);
   };
 

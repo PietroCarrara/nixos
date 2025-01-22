@@ -120,6 +120,9 @@ in
     permittedInsecurePackages = [
       "dotnet-sdk-wrapped-6.0.428"
       "dotnet-sdk-6.0.428"
+      # These packages are not insecure by themselves, but we put dotnet 6 inside of them
+      "dotnet-combined"
+      "dotnet-wrapped-combined"
     ];
 
     packageOverrides = pkgs: {
@@ -238,7 +241,7 @@ in
         android-tools
         android-studio
         dbeaver-bin
-        pkgs.dotnet-sdk_6
+        (with dotnetCorePackages; combinePackages [ sdk_6_0 sdk_8_0_3xx ])
       ]);
   };
 

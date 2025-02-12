@@ -73,7 +73,7 @@ in
       desktopManager.gnome.enable = true;
       displayManager.gdm.wayland = false;
 
-      digimend.enable = true;
+      # digimend.enable = true;
 
       xkb.layout = "br";
       xkb.variant = "";
@@ -154,6 +154,8 @@ in
     packages = with pkgs;
       [
         firefox
+        zoom-us
+        scribus
         nixpkgs-fmt
         pavucontrol
         git
@@ -169,7 +171,7 @@ in
         go
         nodejs
         yarn
-        imagemagick
+        imagemagickBig
         p7zip
         libreoffice
         krita

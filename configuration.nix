@@ -8,7 +8,8 @@ let
   env = import ./env.nix;
   aagl-gtk-on-nix = import (builtins.fetchTarball
     "https://github.com/ezKEa/aagl-gtk-on-nix/archive/main.tar.gz");
-in {
+in
+{
   imports = [ ./hardware-configuration.nix aagl-gtk-on-nix.module ];
 
   boot = {
@@ -165,7 +166,7 @@ in {
         clang
         go
         nodejs
-        yarn
+        yarn-berry
         imagemagickBig
         p7zip
         libreoffice
@@ -231,10 +232,12 @@ in {
         awscli2
         terraform
         packer
-        jdk17
-        android-studio
         dbeaver-bin
         (with dotnetCorePackages; combinePackages [ sdk_6_0 sdk_8_0_3xx ])
+
+        # for android
+        android-studio
+        jdk17
       ]);
   };
 
@@ -268,6 +271,11 @@ in {
     ];
   };
 
+  programs.nix-ld.enable = env.work;
+  programs.nix-ld.libraries = with pkgs; [
+    xorg.libX11
+  ];
+
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "pietro";
 
@@ -297,9 +305,16 @@ in {
 
   environment.sessionVariables = {
     NIX_AUTO_RUN = "ENABLE";
-    # You'll have to install the SDK via android studio to this folder, I'm too busy to make this with a nix file
-    ANDROID_HOME = lib.optional env.work "/home/pietro/Android/Sdk";
     LIBVA_DRIVER_NAME = lib.optional env.intel "iHD";
+
+    # You'll have to install the SDK via sdkmanager to this folder, I'm too busy to make this with a nix file
+    ANDROID_HOME = lib.optional env.work "/home/pietro/Android/Sdk";
+    # If you externally download android tools here, you'll need nix-ld enabled to run them
+    PATH = lib.optional env.work (
+      "/home/pietro/Android/Sdk/emulator" + ":" +
+      "/home/pietro/Android/Sdk/platform-tools" + ":" +
+      "/home/pietro/Android/Sdk/cmdline-tools/latest/bin"
+    );
   };
 
   environment.sessionVariables.GST_PLUGIN_SYSTEM_PATH_1_0 =

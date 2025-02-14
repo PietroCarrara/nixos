@@ -2,6 +2,9 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
+# A quick reminder that, if you get esoteric build errors, it might be worth checking your nix store:
+# $ nix-store --verify --check-contents --repair
+
 { config, lib, pkgs, ... }:
 
 let
@@ -274,6 +277,7 @@ in
   programs.nix-ld.enable = env.work;
   programs.nix-ld.libraries = with pkgs; [
     xorg.libX11
+    xorg.libxcb
   ];
 
   services.displayManager.autoLogin.enable = true;

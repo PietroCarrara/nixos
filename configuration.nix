@@ -156,7 +156,7 @@ in
         firefox
         zoom-us
         scribus
-        nixpkgs-fmt
+        nixfmt-classic
         pavucontrol
         git
         ffmpeg
@@ -181,6 +181,10 @@ in
         discord
         fusee-launcher
         ns-usbloader
+
+        # PDF manipulation
+        pdftk
+        texliveFull
 
         gnome-online-accounts
         gnome-tweaks

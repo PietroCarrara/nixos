@@ -6,17 +6,14 @@
 
 let
   env = import ./env.nix;
-  aagl-gtk-on-nix = import (builtins.fetchTarball "https://github.com/ezKEa/aagl-gtk-on-nix/archive/main.tar.gz");
-in
-{
-  imports =
-    [
-      ./hardware-configuration.nix
-      aagl-gtk-on-nix.module
-    ];
+  aagl-gtk-on-nix = import (builtins.fetchTarball
+    "https://github.com/ezKEa/aagl-gtk-on-nix/archive/main.tar.gz");
+in {
+  imports = [ ./hardware-configuration.nix aagl-gtk-on-nix.module ];
 
   boot = {
-    kernelParams = [ "quiet" "splash" ] ++ (lib.optionals env.intel [ "i915.enable_dc=0" "i915.enable_psr=0" ]);
+    kernelParams = [ "quiet" "splash" ]
+      ++ (lib.optionals env.intel [ "i915.enable_dc=0" "i915.enable_psr=0" ]);
     consoleLogLevel = 0;
     initrd.verbose = false;
     plymouth.enable = true;
@@ -66,18 +63,17 @@ in
   };
 
   # Enable a windowing system (not necessarily xorg).
-  services.xserver =
-    {
-      enable = true;
-      displayManager.gdm.enable = true;
-      desktopManager.gnome.enable = true;
-      displayManager.gdm.wayland = false;
+  services.xserver = {
+    enable = true;
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
+    displayManager.gdm.wayland = false;
 
-      # digimend.enable = true;
+    # digimend.enable = true;
 
-      xkb.layout = "br";
-      xkb.variant = "";
-    };
+    xkb.layout = "br";
+    xkb.variant = "";
+  };
 
   console.keyMap = "br-abnt2";
 
@@ -92,16 +88,15 @@ in
     settings = {
       utp-enabled = true;
       incomplete-dir = "/home/pietro/Downloads/torrents/incomplete";
-      download-dir = "/home/pietro/Downloads/torrents/incomplete"; # Legacy compat
+      download-dir =
+        "/home/pietro/Downloads/torrents/incomplete"; # Legacy compat
       download-queue-enabled = false;
       rpc-whitelist-enabled = false;
       rpc-bind-address = "0.0.0.0";
     };
   };
 
-  services.sunshine = {
-    enable = !env.work;
-  };
+  services.sunshine = { enable = !env.work; };
 
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -125,22 +120,22 @@ in
       "dotnet-wrapped-combined"
     ];
 
-    packageOverrides = pkgs: {
-      # https://github.com/ibus/ibus/issues/2656
-      # https://github.com/ibus/ibus/issues/2618
-      # ibus = pkgs.ibus.overrideAttrs
-      #   (old: rec {
-      #     version = "1.5.29";
-      #     src = pkgs.fetchFromGitHub {
-      #       owner = "ibus";
-      #       repo = "ibus";
-      #       rev = version;
-      #       sha256 = "sha256-d4EUIg0v8rfHdvzG5USc6GLY6QHtQpIJp1PrPaaBxxE=";
-      #     };
-      #   });
-    };
+    packageOverrides = pkgs:
+      {
+        # https://github.com/ibus/ibus/issues/2656
+        # https://github.com/ibus/ibus/issues/2618
+        # ibus = pkgs.ibus.overrideAttrs
+        #   (old: rec {
+        #     version = "1.5.29";
+        #     src = pkgs.fetchFromGitHub {
+        #       owner = "ibus";
+        #       repo = "ibus";
+        #       rev = version;
+        #       sha256 = "sha256-d4EUIg0v8rfHdvzG5USc6GLY6QHtQpIJp1PrPaaBxxE=";
+        #     };
+        #   });
+      };
   };
-
 
   users.users.pietro = {
     isNormalUser = true;
@@ -202,17 +197,14 @@ in
         gst_all_1.gst-plugins-ugly
         gst_all_1.gst-libav
 
-        (pkgs.writeShellScriptBin "flac2mp3" (builtins.readFile ./scripts/flac2mp3.sh))
-        (pkgs.writeShellScriptBin "cue2flac" ((import ./scripts/cue2flac.sh.nix) { inherit cuetools; }))
+        (pkgs.writeShellScriptBin "flac2mp3"
+          (builtins.readFile ./scripts/flac2mp3.sh))
+        (pkgs.writeShellScriptBin "cue2flac"
+          ((import ./scripts/cue2flac.sh.nix) { inherit cuetools; }))
 
         (mpv.override {
-          scripts = [
-            mpvScripts.mpris
-          ];
-          extraMakeWrapperArgs = [
-            "--add-flags"
-            "--cache=yes"
-          ];
+          scripts = [ mpvScripts.mpris ];
+          extraMakeWrapperArgs = [ "--add-flags" "--cache=yes" ];
         })
 
         (lollypop.override {
@@ -220,9 +212,7 @@ in
           youtubeSupport = false;
           kid3Support = false;
         })
-      ]
-      ++
-      (lib.optionals (!env.work) [
+      ] ++ (lib.optionals (!env.work) [
         osu-lazer-bin
         lutris
         wine
@@ -230,9 +220,7 @@ in
         cartridges
         vscode
         transmission-remote-gtk
-      ])
-      ++
-      (lib.optionals env.work [
+      ]) ++ (lib.optionals env.work [
         rustup
         vscode-fhs
         slack
@@ -260,14 +248,15 @@ in
       package = pkgs.wireshark;
     };
     xwayland.enable = true;
-    neovim = { enable = true; defaultEditor = true; };
+    neovim = {
+      enable = true;
+      defaultEditor = true;
+    };
     honkers-railway-launcher.enable = !env.work;
   };
 
   fonts = {
-    fontconfig = {
-      subpixel.rgba = "rgb";
-    };
+    fontconfig = { subpixel.rgba = "rgb"; };
     packages = with pkgs; [
       noto-fonts
       noto-fonts-cjk-sans
@@ -280,26 +269,23 @@ in
   services.displayManager.autoLogin.user = "pietro";
 
   # Tell Xorg to use the nvidia driver (also valid for Wayland)
-  services.xserver.videoDrivers = lib.optional
-    env.nvidia
-    "nvidia";
+  services.xserver.videoDrivers = lib.optional env.nvidia "nvidia";
   hardware.graphics = {
     enable = true;
-    extraPackages = lib.optionals env.intel (with pkgs; [ intel-media-driver intel-ocl intel-vaapi-driver ]);
+    extraPackages = lib.optionals env.intel
+      (with pkgs; [ intel-media-driver intel-ocl intel-vaapi-driver ]);
   };
-  hardware.nvidia = lib.optionalAttrs
-    env.nvidia
-    {
-      open = false;
-      modesetting.enable = true;
-      package = config.boot.kernelPackages.nvidiaPackages.latest;
-      prime = {
-        offload.enableOffloadCmd = true;
-        reverseSync.enable = true;
-        intelBusId = "PCI:0:2:0";
-        nvidiaBusId = "PCI:4:0:0";
-      };
+  hardware.nvidia = lib.optionalAttrs env.nvidia {
+    open = false;
+    modesetting.enable = true;
+    package = config.boot.kernelPackages.nvidiaPackages.latest;
+    prime = {
+      offload.enableOffloadCmd = true;
+      reverseSync.enable = true;
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:4:0:0";
     };
+  };
 
   # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
   systemd.services."getty@tty1".enable = false;
@@ -313,11 +299,8 @@ in
     LIBVA_DRIVER_NAME = lib.optional env.intel "iHD";
   };
 
-  environment.sessionVariables.GST_PLUGIN_SYSTEM_PATH_1_0 = lib.makeSearchPathOutput
-    "lib"
-    "lib/gstreamer-1.0"
-    (with pkgs.gst_all_1;
-    [
+  environment.sessionVariables.GST_PLUGIN_SYSTEM_PATH_1_0 =
+    lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0" (with pkgs.gst_all_1; [
       gst-plugins-good
       gst-plugins-bad
       gst-plugins-ugly

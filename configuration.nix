@@ -178,6 +178,7 @@ in {
         ns-usbloader
 
         # PDF manipulation
+        mupdf-headless
         pdftk
         texliveMedium
 

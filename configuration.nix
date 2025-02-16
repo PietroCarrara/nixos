@@ -182,10 +182,6 @@ in
         fusee-launcher
         ns-usbloader
 
-        # Godot+VR for this semester
-        monado
-        godot_4
-
         gnome-online-accounts
         gnome-tweaks
         adwaita-icon-theme

@@ -179,7 +179,7 @@ in {
 
         # PDF manipulation
         pdftk
-        texliveFull
+        texliveMedium
 
         gnome-online-accounts
         gnome-tweaks

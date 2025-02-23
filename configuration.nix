@@ -174,6 +174,8 @@ in {
         eartag
         geary
         discord
+        android-tools
+        scrcpy
         fusee-launcher
         ns-usbloader
 
@@ -229,7 +231,6 @@ in {
         terraform
         packer
         jdk17
-        android-tools
         android-studio
         dbeaver-bin
         (with dotnetCorePackages; combinePackages [ sdk_6_0 sdk_8_0_3xx ])

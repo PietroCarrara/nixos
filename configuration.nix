@@ -223,6 +223,7 @@ in {
         cartridges
         vscode
         transmission-remote-gtk
+        wonderdraft
       ]) ++ (lib.optionals env.work [
         rustup
         vscode-fhs

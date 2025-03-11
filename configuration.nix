@@ -102,7 +102,7 @@ in
 
   services.sunshine = { enable = !env.work; };
 
-  services.pulseaudio.enable = false;
+  hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -169,7 +169,7 @@ in
         clang
         go
         nodejs
-        yarn-berry
+        yarn
         imagemagickBig
         p7zip
         libreoffice
@@ -237,10 +237,11 @@ in
         packer
         dbeaver-bin
         (with dotnetCorePackages; combinePackages [ sdk_6_0 sdk_8_0_3xx ])
+        nomachine-client
 
         # for android
-        android-studio
         jdk17
+        android-studio
       ]);
   };
 
@@ -278,6 +279,21 @@ in
   programs.nix-ld.libraries = with pkgs; [
     xorg.libX11
     xorg.libxcb
+    xorg.libXi
+    xorg.libXext
+    xorg.libxkbfile
+    xorg.libXcursor
+    xorg.xcbutilcursor
+    libpulseaudio
+    libpng
+    nss
+    nspr
+    expat
+    libdrm
+    # libbsd
+    # libsForQt5.full
+    # qemu
+    # qemu_full
   ];
 
   services.displayManager.autoLogin.enable = true;

@@ -354,7 +354,10 @@ in
     mkcd() {
       mkdir -p "$1" && cd "$1"
     }
-  '';
+  '' + (lib.optionalString env.work ''
+    alias code-push-standalone="node /home/pietro/Projects/code-push-server/cli/bin/script/cli.js"
+    alias codepush="node /home/pietro/Projects/code-push-server/cli/bin/script/cli.js"
+  '');
 
   environment.sessionVariables = {
     TZ = config.time.timeZone; # Workarround for timezones

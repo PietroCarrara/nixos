@@ -9,11 +9,9 @@
 
 let
   env = import ./env.nix;
-  aagl-gtk-on-nix = import (builtins.fetchTarball
-    "https://github.com/ezKEa/aagl-gtk-on-nix/archive/main.tar.gz");
 in
 {
-  imports = [ ./hardware-configuration.nix aagl-gtk-on-nix.module ];
+  imports = [ ./hardware-configuration.nix ];
 
   boot = {
     kernelParams = [ "quiet" "splash" ]
@@ -29,7 +27,6 @@ in
     swraid.enable = false;
   };
 
-  nix.settings = aagl-gtk-on-nix.nixConfig; # Set up Cachix for aagl
 
   nix.gc = {
     automatic = true;
@@ -112,7 +109,12 @@ in
     wireplumber.enable = true;
   };
 
-  virtualisation.docker.enable = true;
+  virtualisation.docker = {
+    enable = true;
+    package = pkgs.docker_28;
+    liveRestore = false;
+  };
+
 
   nixpkgs.config = {
     allowUnfree = true;
@@ -262,7 +264,6 @@ in
       enable = true;
       defaultEditor = true;
     };
-    honkers-railway-launcher.enable = !env.work;
   };
 
   fonts = {

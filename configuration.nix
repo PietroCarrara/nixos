@@ -230,6 +230,7 @@ in
         vscode
         transmission-remote-gtk
         wonderdraft
+        (pkgs.callPackage ./nix/dungeondraft.nix { })
       ]) ++ (lib.optionals env.work [
         rustup
         vscode-fhs

@@ -7,10 +7,8 @@
 
 { config, lib, pkgs, ... }:
 
-let
-  env = import ./env.nix;
-in
-{
+let env = import ./env.nix;
+in {
   imports = [ ./hardware-configuration.nix ];
 
   boot = {
@@ -26,7 +24,6 @@ in
     };
     swraid.enable = false;
   };
-
 
   nix.gc = {
     automatic = true;
@@ -70,7 +67,7 @@ in
     desktopManager.gnome.enable = true;
     displayManager.gdm.wayland = false;
 
-    # digimend.enable = true;
+    digimend.enable = true;
 
     xkb.layout = "br";
     xkb.variant = "";
@@ -111,10 +108,9 @@ in
 
   virtualisation.docker = {
     enable = true;
-    package = pkgs.docker_28;
     liveRestore = false;
   };
-
+  virtualisation.virtualbox.host.enable = true;
 
   nixpkgs.config = {
     allowUnfree = true;
@@ -332,11 +328,9 @@ in
     # You'll have to install the SDK via sdkmanager to this folder, I'm too busy to make this with a nix file
     ANDROID_HOME = lib.optional env.work "/home/pietro/Android/Sdk";
     # If you externally download android tools here, you'll need nix-ld enabled to run them
-    PATH = lib.optional env.work (
-      "/home/pietro/Android/Sdk/emulator" + ":" +
-      "/home/pietro/Android/Sdk/platform-tools" + ":" +
-      "/home/pietro/Android/Sdk/cmdline-tools/latest/bin"
-    );
+    PATH = lib.optional env.work ("/home/pietro/Android/Sdk/emulator" + ":"
+      + "/home/pietro/Android/Sdk/platform-tools" + ":"
+      + "/home/pietro/Android/Sdk/cmdline-tools/latest/bin");
   };
 
   environment.sessionVariables.GST_PLUGIN_SYSTEM_PATH_1_0 =
